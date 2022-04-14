@@ -3,6 +3,14 @@ class Game
   @@array_chart = ["X","O"]
   @@index_chart = 0
   @@player_turn = ""
+  @@cont_turns = 0
+  def Game.cont_turns(opc="get")
+    if opc == "reset"
+      @@cont_turns = 0
+    else
+      @@cont_turns
+    end
+  end
   def Game.reset
     @@array=[1,2,3,4,5,6,7,8,9]
   end
@@ -55,6 +63,7 @@ class Player < Game
       print "\n \n #{@name} win! with: #{@chart} \n \n"
       return -1
     else
+      @@cont_turns +=1
       return 1
     end
   end
@@ -90,6 +99,7 @@ print "Enter name player2: "
 player2=Player.new(gets.chomp)
 parcial_game = false
 puts "The game start with player1 (#{player1.chart_player}): #{player1.name_player} and player2 (#{player2.chart_player}): #{player2.name_player} "
+
 while end_game == false do
   ok_p1 = false
   ok_p2 = false
@@ -116,7 +126,7 @@ while end_game == false do
       puts "Enter incorrect!: Enter a available number, \n see the board\n"
     end
   end
-  if parcial_game == false and end_game == false
+  if parcial_game == false and end_game == false and Game.cont_turns < 9
     while ok_p2 == false do
       puts Game.draw_board
       print "Turn #{player2.name_player}, chose a available number: "
@@ -139,12 +149,14 @@ while end_game == false do
       end
     end
   end
-  if parcial_game == true
+  if parcial_game == true or Game.cont_turns >=9
+    puts Game.cont_turns >= 9 ? "TIED GAME - NOBODY LOSE\n" : "\n"
     puts "Do you want to play again ? y/n: "
     if gets.chomp == "y"
       Game.reset
       parcial_game = false
       puts "The game start with player1 (#{player1.chart_player}): #{player1.name_player} and player2 (#{player2.chart_player}): #{player2.name_player} "
+      Game.cont_turns("reset")
     else
       end_game = true
     end
