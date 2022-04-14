@@ -150,6 +150,7 @@ while end_game == false do
     end
   end
   if parcial_game == true or Game.cont_turns >=9
+    puts Game.draw_board
     puts Game.cont_turns >= 9 ? "TIED GAME - NOBODY LOSE\n" : "\n"
     puts "Do you want to play again ? y/n: "
     if gets.chomp == "y"
