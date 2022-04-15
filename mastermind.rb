@@ -21,9 +21,9 @@ class Game
             validAnswer(Game.generate_answer) ? break : count -=1
         end
         if count > 0
-            puts "The PC win! with #{12 + 1 - count} Tries"
+            puts "\n The PC win! with #{12 + 1 - count} Tries \n"
         else
-            puts "You Win! - The PC isn't intelligent"
+            puts "\n You Win! - The PC isn't intelligent \n"
         end
     end
 
@@ -92,7 +92,7 @@ module Game_steps
         return gets.chomp
     end
     def Game_steps.mode_game(name)
-        puts "#{name} select the modo game"
+        puts "#{name} select the modo game \n"
         puts "(1) You are the player"
         puts "(2) You are the master"
         puts "(3) Exit"
@@ -129,53 +129,57 @@ end
 end_game = false
 option_mode = 0
 player=Player.new(Game_steps.title)
-while option_mode < 1 or option_mode > 3 do
-    option_mode = Game_steps.mode_game(player.get_name).to_i
-end
-if option_mode == 1 
-    cont_games = 12
-    rond = true
-    Game.generate_pass
-    while cont_games > 0 and rond == true do
-        puts "Enter the colors's code r-red, g-green, b-blue, y-yellow (Example: rgby)"
-        print "#{12 + 1 - cont_games} Trie: "
-        answer = Game_steps.inputData(gets.chomp.split(''))
-        if answer.length == 4 and answer.join('') != "exit"
-            if player.play_rond(answer)
-                cont_games -= 1
-                puts "You Win with #{12-cont_games} tries"
+while end_game == false
+    while option_mode < 1 or option_mode > 3 do
+        option_mode = Game_steps.mode_game(player.get_name).to_i
+    end
+    if option_mode == 1 
+        cont_games = 12
+        rond = true
+        Game.generate_pass
+        while cont_games > 0 and rond == true do
+            puts "Enter the colors's code r-red, g-green, b-blue, y-yellow (Example: rgby)"
+            print "#{12 + 1 - cont_games} Trie: "
+            answer = Game_steps.inputData(gets.chomp.split(''))
+            if answer.length == 4 and answer.join('') != "exit"
+                if player.play_rond(answer)
+                    cont_games -= 1
+                    puts "\n You Win with #{12-cont_games} tries \n"
+                    rond = false
+                else
+                    cont_games -= 1
+                end
+            elsif answer.join('') == "exit"
+                puts "\n"
                 rond = false
+                option_mode = 0
             else
-                cont_games -= 1
+                puts "\n \n Enter available data (Ex: rgby) \n \n"
             end
-        elsif answer.join('') == "exit"
-            end_game = true
-            break
-        else
-            puts "\n \n Enter available data (Ex: rgby) \n \n"
+            if cont_games < 1
+                puts "\n You Lose! \n"
+                puts "The answer is: #{player.get_answer}"
+            end
         end
-        if cont_games < 1
-            puts "\n You Lose! \n"
-            puts "The answer is: #{player.get_answer}"
+    elsif option_mode == 2
+        rond = true
+        while rond == true do
+            puts "Enter the colors's code r-red, g-green, b-blue, y-yellow (Example: rgby)"
+            code_color = Game_steps.inputData(gets.chomp.split(''))
+            if code_color.length == 4 and code_color.join('') != "exit"
+                player.pc_game(code_color)
+                rond = false
+            elsif code_color.join('') == "exit"
+                puts "\n"
+                rond = false
+                option_mode = 0
+            else
+                puts "\n \n Enter available data (Ex: rgby) \n \n"
+            end
         end
-    end
-elsif option_mode == 2
-    rond = true
-    while rond == true do
-        puts "Enter the colors's code r-red, g-green, b-blue, y-yellow (Example: rgby)"
-        code_color = Game_steps.inputData(gets.chomp.split(''))
-        if code_color.length == 4 and code_color.join('') != "exit"
-            player.pc_game(code_color)
-            break
-        elsif code_color.join('') == "exit"
-            end_game = true
-            break
-        else
-            puts "\n \n Enter available data (Ex: rgby) \n \n"
-        end
-    end
 
-elsif option_mode == 3
-    end_game = true
+    elsif option_mode == 3
+        end_game = true
+    end
 end
-puts "Thank's for play"
+puts "\n Thank's for play"
