@@ -53,7 +53,21 @@ class Player < Game
 
 end
 
-player = Player.new("Luis")
-puts Game.generate_pass.inspect
-puts player.test(["BLUE","RED","GREEN","RED"]).inspect
+#General function
+def title
+    puts "Welcome to MASTERMIND Game"
+    puts "2 players play the game (Human vs Machine) and to exit enter: exit"
+    print "Enter name player: "
+    return gets.chomp
+end
+def mode_game(name)
+    puts "#{name} select the modo game"
+    puts "(1) You are the player"
+    puts "(2) You are the master"
+    puts "(3) Exit"
+    return gets.chomp
+end
 
+
+player=Player.new(title)
+mode_game(player.get_name)
