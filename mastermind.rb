@@ -70,6 +70,6 @@ module Game_steps
     end
 end
 
-
+#Program principal
 player=Player.new(Game_steps.title)
 Game_steps.mode_game(player.get_name)
