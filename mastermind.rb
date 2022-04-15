@@ -74,7 +74,7 @@ module Game_steps
     end
     def Game_steps.inputData(array)
         arrayColor = []
-        if array.length == 4
+        if array.length == 4 and array.join('') != "exit"
             array.each do |color|
                 case color
                 when "r"
@@ -89,6 +89,8 @@ module Game_steps
                     return []
                 end
             end
+        elsif array.join('') == "exit"
+            return ["e","x","i","t"]
         else
             return []
         end
@@ -112,7 +114,7 @@ if option_mode == 1
         puts "Enter the colors's code r-red, g-green, b-blue, y-yellow (Example: rgby)"
         print "#{12 + 1 - cont_games} Trie: "
         answer = Game_steps.inputData(gets.chomp.split(''))
-        if answer.length == 4
+        if answer.length == 4 and answer.join('') != "exit"
             if player.play_rond(answer)
                 cont_games -= 1
                 puts "You Win with #{12-cont_games} tries"
@@ -120,9 +122,15 @@ if option_mode == 1
             else
                 cont_games -= 1
             end
+        elsif answer.join('') == "exit"
+            end_game = true
+            break
         else
             puts "\n \n Enter available data (Ex: rgby) \n \n"
         end
         if cont_games < 1 then puts "\n You Lose! \n" end
     end
+elsif option_mode == 3
+    end_game = true
 end
+puts "Thank's for play"
