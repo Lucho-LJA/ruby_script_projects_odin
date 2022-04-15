@@ -2,6 +2,7 @@ class Game
     @@validColor = []
     @@colors = ["RED","GREEN","BLUE","YELLOW"]
     @@random = Random.new
+    @@valid_color_pc = ["-","-","-","-"]
 
     public
     def Game.generate_pass
@@ -10,7 +11,40 @@ class Game
 
     private
     def Game.generate_answer
-        [ Game.random_color,  Game.random_color,  Game.random_color,  Game.random_color]
+        answer_generated = []
+        @@valid_color_pc.each do |color|
+            if color == "-"
+                answer_generated.push(Game.random_color)
+            else
+                answer_generated.push(color)
+            end
+        end
+        answer_generated
+    end
+
+    def validAnswer_pc(arrayColor)
+        state = []
+        auxIndex = []
+        puts arrayColor.inspect
+        arrayColor.each_with_index do |color,index|
+            if color == @@validColor[index]
+                @@valid_color_pc[index] = color
+                state.push("Check")
+                auxIndex.push(index)
+            end
+        end
+        @@validColor.each_with_index do |color,index|
+            unless auxIndex.include?(index)
+                if arrayColor.include?(color) then state.push("Good") end
+            end
+        end
+        n=4-state.length
+        for i in 0...n do
+            state.push(" - ")
+        end
+        print state
+        puts ""
+        return  winner?(state)
     end
 
     def play_pc(array)
@@ -18,12 +52,14 @@ class Game
         count = 12
         while count > 0
             puts "PC's Trie: #{12 + 1 - count}"
-            validAnswer(Game.generate_answer) ? break : count -=1
+            validAnswer_pc(Game.generate_answer) ? break : count -=1
         end
         if count > 0
             puts "\n The PC win! with #{12 + 1 - count} Tries \n"
+            @@valid_color_pc = ["-","-","-","-"]
         else
             puts "\n You Win! - The PC isn't intelligent \n"
+            @@valid_color_pc = ["-","-","-","-"]
         end
     end
 
