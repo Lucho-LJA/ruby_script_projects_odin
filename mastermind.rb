@@ -21,7 +21,6 @@ class Game
         end
         @@validColor.each_with_index do |color,index|
             unless auxIndex.include?(index)
-                p color
                 if arrayColor.include?(color) then state.push("Good") end
             end
         end
@@ -29,7 +28,13 @@ class Game
         for i in 0...n do
             state.push(" - ")
         end
-        return  state
+        print state
+        puts ""
+        return  winner?(state)
+    end
+
+    def winner?(states)
+        states.all?{|state| state == "Check"}
     end
 
     def Game.random_color
@@ -46,8 +51,7 @@ class Player < Game
         @name
     end
 
-    def test(colors) 
-        p "test"
+    def play_rond(colors) 
         validAnswer(colors)
     end
 
@@ -102,11 +106,23 @@ while option_mode < 1 or option_mode > 3 do
 end
 if option_mode == 1 
     cont_games = 12
+    rond = true
     Game.generate_pass
-    while cont_games > 0 do
+    while cont_games > 0 and rond == true do
         puts "Enter the colors's code r-red, g-green, b-blue, y-yellow (Example: rgby)"
-        p Game_steps.inputData(gets.chomp.split(''))
-        cont_games = 0
-
+        print "#{12 + 1 - cont_games} Trie: "
+        answer = Game_steps.inputData(gets.chomp.split(''))
+        if answer.length == 4
+            if player.play_rond(answer)
+                cont_games -= 1
+                puts "You Win with #{12-cont_games} tries"
+                rond = false
+            else
+                cont_games -= 1
+            end
+        else
+            puts "\n \n Enter available data (Ex: rgby) \n \n"
+        end
+        if cont_games < 1 then puts "\n You Lose! \n" end
     end
 end
