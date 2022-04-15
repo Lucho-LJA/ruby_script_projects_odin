@@ -9,10 +9,28 @@ class Game
     end
 
     private
+    def Game.generate_answer
+        [ Game.random_color,  Game.random_color,  Game.random_color,  Game.random_color]
+    end
+
+    def play_pc(array)
+        @@validColor = array
+        count = 12
+        while count > 0
+            puts "PC's Trie: #{12 + 1 - count}"
+            validAnswer(Game.generate_answer) ? break : count -=1
+        end
+        if count > 0
+            puts "The PC win! with #{12 + 1 - count} Tries"
+        else
+            puts "You Win! - The PC isn't intelligent"
+        end
+    end
 
     def validAnswer(arrayColor)
         state = []
         auxIndex = []
+        puts arrayColor.inspect
         arrayColor.each_with_index do |color,index|
             if color == @@validColor[index]
                 state.push("Check")
@@ -53,6 +71,14 @@ class Player < Game
 
     def play_rond(colors) 
         validAnswer(colors)
+    end
+
+    def pc_game(colors)
+        puts "The colors code is: #{colors}"
+        play_pc(colors)
+    end
+    def get_answer
+        @@validColor
     end
 
 end
@@ -128,8 +154,27 @@ if option_mode == 1
         else
             puts "\n \n Enter available data (Ex: rgby) \n \n"
         end
-        if cont_games < 1 then puts "\n You Lose! \n" end
+        if cont_games < 1
+            puts "\n You Lose! \n"
+            puts "The answer is: #{player.get_answer}"
+        end
     end
+elsif option_mode == 2
+    rond = true
+    while rond == true do
+        puts "Enter the colors's code r-red, g-green, b-blue, y-yellow (Example: rgby)"
+        code_color = Game_steps.inputData(gets.chomp.split(''))
+        if code_color.length == 4 and code_color.join('') != "exit"
+            player.pc_game(code_color)
+            break
+        elsif code_color.join('') == "exit"
+            end_game = true
+            break
+        else
+            puts "\n \n Enter available data (Ex: rgby) \n \n"
+        end
+    end
+
 elsif option_mode == 3
     end_game = true
 end
