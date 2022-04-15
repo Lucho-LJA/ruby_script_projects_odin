@@ -54,20 +54,22 @@ class Player < Game
 end
 
 #General function
-def title
-    puts "Welcome to MASTERMIND Game"
-    puts "2 players play the game (Human vs Machine) and to exit enter: exit"
-    print "Enter name player: "
-    return gets.chomp
-end
-def mode_game(name)
-    puts "#{name} select the modo game"
-    puts "(1) You are the player"
-    puts "(2) You are the master"
-    puts "(3) Exit"
-    return gets.chomp
+module Game_steps
+    def Game_steps.title
+        puts "Welcome to MASTERMIND Game"
+        puts "2 players play the game (Human vs Machine) and to exit enter: exit"
+        print "Enter name player: "
+        return gets.chomp
+    end
+    def Game_steps.mode_game(name)
+        puts "#{name} select the modo game"
+        puts "(1) You are the player"
+        puts "(2) You are the master"
+        puts "(3) Exit"
+        return gets.chomp
+    end
 end
 
 
-player=Player.new(title)
-mode_game(player.get_name)
+player=Player.new(Game_steps.title)
+Game_steps.mode_game(player.get_name)
